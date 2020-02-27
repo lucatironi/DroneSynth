@@ -42,6 +42,9 @@ private:
     Slider osc3FrequencySlider;
     Slider osc3LevelSlider;
     ToggleButton osc3MuteButton;
+    
+    Slider filterCutoffFrequencySlider;
+    Slider filterResonanceSlider;
 
     Slider masterGainSlider;
 
@@ -59,6 +62,9 @@ public:
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> osc3FrequencySliderValue;
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> osc3LevelSliderValue;
     std::unique_ptr <AudioProcessorValueTreeState::ButtonAttachment> osc3MuteButtonValue;
+    
+    std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> filterCutoffFrequencySliderValue;
+    std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> filterResonanceSliderValue;
 
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> masterGainSliderValue;
 };

@@ -61,6 +61,16 @@ DroneSynthAudioProcessorEditor::DroneSynthAudioProcessorEditor (DroneSynthAudioP
     addAndMakeVisible (&osc3MuteButton);
 
 
+    filterCutoffFrequencySlider.setSliderStyle (Slider::SliderStyle::Rotary);
+    filterCutoffFrequencySlider.setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    filterCutoffFrequencySlider.setTextValueSuffix (" Hz");
+    addAndMakeVisible (&filterCutoffFrequencySlider);
+
+    filterResonanceSlider.setSliderStyle (Slider::SliderStyle::Rotary);
+    filterResonanceSlider.setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    addAndMakeVisible (&filterResonanceSlider);
+
+
     masterGainSlider.setSliderStyle (Slider::SliderStyle::LinearVertical);
     masterGainSlider.setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     masterGainSlider.setTextValueSuffix (" Db");
@@ -78,6 +88,9 @@ DroneSynthAudioProcessorEditor::DroneSynthAudioProcessorEditor (DroneSynthAudioP
     osc3FrequencySliderValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.parameters, "osc3Frequency", osc3FrequencySlider);
     osc3LevelSliderValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.parameters, "osc3Level", osc3LevelSlider);
     osc3MuteButtonValue = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment> (processor.parameters, "osc3Mute", osc3MuteButton);
+    
+    filterCutoffFrequencySliderValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.parameters, "filterCutoffFrequency", filterCutoffFrequencySlider);
+    filterResonanceSliderValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.parameters, "filterResonance", filterResonanceSlider);
 
     masterGainSliderValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.parameters, "masterGain", masterGainSlider);
 }
@@ -106,6 +119,9 @@ void DroneSynthAudioProcessorEditor::resized()
     osc3FrequencySlider.setBounds (260, 20, 100, 100);
     osc3LevelSlider.setBounds (280, 120, 60, 200);
     osc3MuteButton.setBounds (260, 340, 100, 40);
+    
+    filterCutoffFrequencySlider.setBounds (380, 120, 100, 100);
+    filterResonanceSlider.setBounds (380, 240, 100, 100);
 
-    masterGainSlider.setBounds (400, 120, 60, 200);
+    masterGainSlider.setBounds (500, 120, 60, 200);
 }

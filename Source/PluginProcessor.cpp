@@ -56,6 +56,9 @@ AudioProcessorValueTreeState::ParameterLayout DroneSynthAudioProcessor::createPa
     auto osc3FrequencyParam = std::make_unique<AudioParameterFloat> ("osc3Frequency", "Osc3Frequency", NormalisableRange<float> (10.0f, 300.0f, 1.0f), 112.0f);
     auto osc3LevelParam = std::make_unique<AudioParameterFloat> ("osc3Level", "Osc3Level", NormalisableRange<float> (0.0f, 100.0f, 1.0f), 100.0f);
     auto osc3MuteParam = std::make_unique<AudioParameterBool> ("osc3Mute", "Osc3Mute", false);
+    
+    auto filterCutoffFrequencyParam = std::make_unique<AudioParameterFloat> ("filterCutoffFrequency", "FilterCutoffFrequency", NormalisableRange<float> (1.0f, 1000.0f, 1.0f), 1000.0f);
+    auto filterResonanceParam = std::make_unique<AudioParameterFloat> ("filterResonance", "FilterResonance", NormalisableRange<float> (0.0f, 20.0f, 0.1f), 0.0f);
 
     auto masterGainParam = std::make_unique<AudioParameterFloat> ("masterGain", "MasterGain", NormalisableRange<float> (-100.0f, 20.0f, 1.0f), -60.0f);
 
@@ -70,6 +73,9 @@ AudioProcessorValueTreeState::ParameterLayout DroneSynthAudioProcessor::createPa
     params.push_back(std::move(osc3FrequencyParam));
     params.push_back(std::move(osc3LevelParam));
     params.push_back(std::move(osc3MuteParam));
+
+    params.push_back(std::move(filterCutoffFrequencyParam));
+    params.push_back(std::move(filterResonanceParam));
 
     params.push_back(std::move(masterGainParam));
 
@@ -184,6 +190,8 @@ void DroneSynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
             myVoice->setOsc1Params (parameters.getRawParameterValue("osc1Frequency"), parameters.getRawParameterValue("osc1Level"), parameters.getRawParameterValue("osc1Mute"));
             myVoice->setOsc2Params (parameters.getRawParameterValue("osc2Frequency"), parameters.getRawParameterValue("osc2Level"), parameters.getRawParameterValue("osc2Mute"));
             myVoice->setOsc3Params (parameters.getRawParameterValue("osc3Frequency"), parameters.getRawParameterValue("osc3Level"), parameters.getRawParameterValue("osc3Mute"));
+            
+            myVoice->setFilterParams (parameters.getRawParameterValue("filterCutoffFrequency"), parameters.getRawParameterValue("filterResonance"));
 
             myVoice->setMasterGain (parameters.getRawParameterValue("masterGain"));
         }

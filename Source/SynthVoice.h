@@ -36,6 +36,12 @@ public:
         osc3Muted = bool(*muted);
     }
 
+    void setFilterParams (std::atomic<float>* cutoffFreq, std::atomic<float>* reso)
+    {
+        filterCutoffFrequency = double(*cutoffFreq);
+        filterResonance = double(*reso);
+    }
+
     void setMasterGain (std::atomic<float>* masterGainValue)
     {
         masterGain = double(*masterGainValue);
@@ -86,11 +92,13 @@ public:
             double theSecondWave = (osc2Muted ? 0.0f : osc2.square(osc2Frequency)) * (osc2Level / 100.0f);
             double theThirdWave  = (osc3Muted ? 0.0f : osc3.square(osc3Frequency)) * (osc3Level / 100.0f);
 
-            double theSound = (theFirstWave + theSecondWave + theThirdWave) * Decibels::decibelsToGain(masterGain);
+            double theSound = theFirstWave + theSecondWave + theThirdWave;
+            double filteredSound = filter.lores(theSound, filterCutoffFrequency, filterResonance);
+            double leveledSound = filteredSound * Decibels::decibelsToGain(masterGain);
 
             for (int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
             {
-                outputBuffer.addSample(channel, startSample, theSound);
+                outputBuffer.addSample(channel, startSample, leveledSound);
             }
 
             ++startSample;
@@ -109,11 +117,15 @@ private:
     double osc3Frequency;
     double osc3Level;
     bool osc3Muted;
-
+    
+    double filterCutoffFrequency;
+    double filterResonance;
     double masterGain;
 
     maxiOsc osc1;
     maxiOsc osc2;
     maxiOsc osc3;
+    
+    maxiFilter filter;
 };
 
