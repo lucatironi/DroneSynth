@@ -45,9 +45,33 @@ AudioProcessorValueTreeState::ParameterLayout DroneSynthAudioProcessor::createPa
 {
     std::vector<std::unique_ptr<RangedAudioParameter>> params;
 
-    auto masterVolumeParam = std::make_unique<AudioParameterFloat> ("masterVolume", "MasterVolume", NormalisableRange<float> (0.0f, 1.0f), 0.1f);
+    auto osc1FrequencyParam = std::make_unique<AudioParameterFloat> ("osc1Frequency", "Osc1Frequency", NormalisableRange<float> (10.0f, 300.0f, 1.0f), 55.0f);
+    auto osc1LevelParam = std::make_unique<AudioParameterFloat> ("osc1Level", "Osc1Level", NormalisableRange<float> (0.0f, 100.0f, 1.0f), 100.0f);
+    auto osc1MuteParam = std::make_unique<AudioParameterBool> ("osc1Mute", "Osc1Mute", false);
 
-    params.push_back(std::move(masterVolumeParam));
+    auto osc2FrequencyParam = std::make_unique<AudioParameterFloat> ("osc2Frequency", "Osc2Frequency", NormalisableRange<float> (10.0f, 300.0f, 1.0f), 110.0f);
+    auto osc2LevelParam = std::make_unique<AudioParameterFloat> ("osc2Level", "Osc2Level", NormalisableRange<float> (0.0f, 100.0f, 1.0f), 100.0f);
+    auto osc2MuteParam = std::make_unique<AudioParameterBool> ("osc2Mute", "Osc2Mute", false);
+
+    auto osc3FrequencyParam = std::make_unique<AudioParameterFloat> ("osc3Frequency", "Osc3Frequency", NormalisableRange<float> (10.0f, 300.0f, 1.0f), 112.0f);
+    auto osc3LevelParam = std::make_unique<AudioParameterFloat> ("osc3Level", "Osc3Level", NormalisableRange<float> (0.0f, 100.0f, 1.0f), 100.0f);
+    auto osc3MuteParam = std::make_unique<AudioParameterBool> ("osc3Mute", "Osc3Mute", false);
+
+    auto masterGainParam = std::make_unique<AudioParameterFloat> ("masterGain", "MasterGain", NormalisableRange<float> (-100.0f, 20.0f, 1.0f), -60.0f);
+
+    params.push_back(std::move(osc1FrequencyParam));
+    params.push_back(std::move(osc1LevelParam));
+    params.push_back(std::move(osc1MuteParam));
+
+    params.push_back(std::move(osc2FrequencyParam));
+    params.push_back(std::move(osc2LevelParam));
+    params.push_back(std::move(osc2MuteParam));
+
+    params.push_back(std::move(osc3FrequencyParam));
+    params.push_back(std::move(osc3LevelParam));
+    params.push_back(std::move(osc3MuteParam));
+
+    params.push_back(std::move(masterGainParam));
 
     return { params.begin(), params.end() };
 }
@@ -157,7 +181,11 @@ void DroneSynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
     {
         if ((myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i))))
         {
-            myVoice->setMasterVolume (parameters.getRawParameterValue("masterVolume"));
+            myVoice->setOsc1Params (parameters.getRawParameterValue("osc1Frequency"), parameters.getRawParameterValue("osc1Level"), parameters.getRawParameterValue("osc1Mute"));
+            myVoice->setOsc2Params (parameters.getRawParameterValue("osc2Frequency"), parameters.getRawParameterValue("osc2Level"), parameters.getRawParameterValue("osc2Mute"));
+            myVoice->setOsc3Params (parameters.getRawParameterValue("osc3Frequency"), parameters.getRawParameterValue("osc3Level"), parameters.getRawParameterValue("osc3Mute"));
+
+            myVoice->setMasterGain (parameters.getRawParameterValue("masterGain"));
         }
     }
 

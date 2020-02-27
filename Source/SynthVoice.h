@@ -15,9 +15,30 @@
 class SynthVoice : public SynthesiserVoice
 {
 public:
-    void setMasterVolume (std::atomic<float>* masterVolumeValue)
+    void setOsc1Params (std::atomic<float>* freq, std::atomic<float>* level, std::atomic<float>* muted)
     {
-        masterVolume = double(*masterVolumeValue);
+        osc1Frequency = double(*freq);
+        osc1Level = double(*level);
+        osc1Muted = bool(*muted);
+    }
+
+    void setOsc2Params (std::atomic<float>* freq, std::atomic<float>* level, std::atomic<float>* muted)
+    {
+        osc2Frequency = double(*freq);
+        osc2Level = double(*level);
+        osc2Muted = bool(*muted);
+    }
+
+    void setOsc3Params (std::atomic<float>* freq, std::atomic<float>* level, std::atomic<float>* muted)
+    {
+        osc3Frequency = double(*freq);
+        osc3Level = double(*level);
+        osc3Muted = bool(*muted);
+    }
+
+    void setMasterGain (std::atomic<float>* masterGainValue)
+    {
+        masterGain = double(*masterGainValue);
     }
     
     //================================================
@@ -61,11 +82,15 @@ public:
     {
         for (int sample = 0; sample < numSamples; ++sample)
         {
-            double theWave = osc1.square(40.0f) * masterVolume;
+            double theFirstWave  = (osc1Muted ? 0.0f : osc1.square(osc1Frequency)) * (osc1Level / 100.0f);
+            double theSecondWave = (osc2Muted ? 0.0f : osc2.square(osc2Frequency)) * (osc2Level / 100.0f);
+            double theThirdWave  = (osc3Muted ? 0.0f : osc3.square(osc3Frequency)) * (osc3Level / 100.0f);
+
+            double theSound = (theFirstWave + theSecondWave + theThirdWave) * Decibels::decibelsToGain(masterGain);
 
             for (int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
             {
-                outputBuffer.addSample(channel, startSample, theWave);
+                outputBuffer.addSample(channel, startSample, theSound);
             }
 
             ++startSample;
@@ -73,8 +98,22 @@ public:
     }
     
 private:
-    double masterVolume;
+    double osc1Frequency;
+    double osc1Level;
+    bool osc1Muted;
+
+    double osc2Frequency;
+    double osc2Level;
+    bool osc2Muted;
+
+    double osc3Frequency;
+    double osc3Level;
+    bool osc3Muted;
+
+    double masterGain;
 
     maxiOsc osc1;
+    maxiOsc osc2;
+    maxiOsc osc3;
 };
 
