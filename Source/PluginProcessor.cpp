@@ -45,22 +45,22 @@ AudioProcessorValueTreeState::ParameterLayout DroneSynthAudioProcessor::createPa
 {
     std::vector<std::unique_ptr<RangedAudioParameter>> params;
 
-    auto osc1FrequencyParam = std::make_unique<AudioParameterFloat> ("osc1Frequency", "Osc1Frequency", NormalisableRange<float> (10.0f, 300.0f, 1.0f), 55.0f);
-    auto osc1LevelParam = std::make_unique<AudioParameterFloat> ("osc1Level", "Osc1Level", NormalisableRange<float> (0.0f, 100.0f, 1.0f), 100.0f);
-    auto osc1MuteParam = std::make_unique<AudioParameterBool> ("osc1Mute", "Osc1Mute", false);
+    auto osc1FrequencyParam = std::make_unique<AudioParameterFloat> ("osc1Frequency", "Osc1 Frequency", NormalisableRange<float> (10.0f, 300.0f, 1.0f), 55.0f, "Hz");
+    auto osc1LevelParam = std::make_unique<AudioParameterFloat> ("osc1Level", "Osc1 Level", NormalisableRange<float> (0.0f, 100.0f, 1.0f), 100.0f, "%");
+    auto osc1MuteParam = std::make_unique<AudioParameterBool> ("osc1Mute", "Osc1 Mute", false);
 
-    auto osc2FrequencyParam = std::make_unique<AudioParameterFloat> ("osc2Frequency", "Osc2Frequency", NormalisableRange<float> (10.0f, 300.0f, 1.0f), 110.0f);
-    auto osc2LevelParam = std::make_unique<AudioParameterFloat> ("osc2Level", "Osc2Level", NormalisableRange<float> (0.0f, 100.0f, 1.0f), 100.0f);
-    auto osc2MuteParam = std::make_unique<AudioParameterBool> ("osc2Mute", "Osc2Mute", false);
+    auto osc2FrequencyParam = std::make_unique<AudioParameterFloat> ("osc2Frequency", "Osc2 Frequency", NormalisableRange<float> (10.0f, 300.0f, 1.0f), 110.0f, "Hz");
+    auto osc2LevelParam = std::make_unique<AudioParameterFloat> ("osc2Level", "Osc2 Level", NormalisableRange<float> (0.0f, 100.0f, 1.0f), 100.0f, "%");
+    auto osc2MuteParam = std::make_unique<AudioParameterBool> ("osc2Mute", "Osc2 Mute", false);
 
-    auto osc3FrequencyParam = std::make_unique<AudioParameterFloat> ("osc3Frequency", "Osc3Frequency", NormalisableRange<float> (10.0f, 300.0f, 1.0f), 112.0f);
-    auto osc3LevelParam = std::make_unique<AudioParameterFloat> ("osc3Level", "Osc3Level", NormalisableRange<float> (0.0f, 100.0f, 1.0f), 100.0f);
-    auto osc3MuteParam = std::make_unique<AudioParameterBool> ("osc3Mute", "Osc3Mute", false);
+    auto osc3FrequencyParam = std::make_unique<AudioParameterFloat> ("osc3Frequency", "Osc3 Frequency", NormalisableRange<float> (10.0f, 300.0f, 1.0f), 112.0f, "Hz");
+    auto osc3LevelParam = std::make_unique<AudioParameterFloat> ("osc3Level", "Osc3 Level", NormalisableRange<float> (0.0f, 100.0f, 1.0f), 100.0f, "%");
+    auto osc3MuteParam = std::make_unique<AudioParameterBool> ("osc3Mute", "Osc3 Mute", false);
     
-    auto filterCutoffFrequencyParam = std::make_unique<AudioParameterFloat> ("filterCutoffFrequency", "FilterCutoffFrequency", NormalisableRange<float> (1.0f, 1000.0f, 1.0f), 1000.0f);
-    auto filterResonanceParam = std::make_unique<AudioParameterFloat> ("filterResonance", "FilterResonance", NormalisableRange<float> (0.0f, 20.0f, 0.1f), 0.0f);
+    auto filterCutoffFrequencyParam = std::make_unique<AudioParameterFloat> ("filterCutoffFrequency", "Filter Cutoff Frequency", NormalisableRange<float> (1.0f, 1000.0f, 1.0f), 1000.0f, "Hz");
+    auto filterResonanceParam = std::make_unique<AudioParameterFloat> ("filterResonance", "Filter Resonance", NormalisableRange<float> (0.0f, 20.0f, 0.1f), 0.0f);
 
-    auto masterGainParam = std::make_unique<AudioParameterFloat> ("masterGain", "MasterGain", NormalisableRange<float> (-100.0f, 20.0f, 1.0f), -60.0f);
+    auto masterGainParam = std::make_unique<AudioParameterFloat> ("masterGain", "Master Gain", NormalisableRange<float> (-100.0f, 20.0f, 1.0f), -60.0f, "Db");
 
     params.push_back(std::move(osc1FrequencyParam));
     params.push_back(std::move(osc1LevelParam));
