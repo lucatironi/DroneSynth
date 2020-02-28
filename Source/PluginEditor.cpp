@@ -120,8 +120,8 @@ void DroneSynthAudioProcessorEditor::resized()
     osc3LevelSlider.setBounds (280, 120, 60, 200);
     osc3MuteButton.setBounds (260, 340, 100, 40);
     
-    filterCutoffFrequencySlider.setBounds (380, 120, 100, 100);
-    filterResonanceSlider.setBounds (380, 240, 100, 100);
+    filterCutoffFrequencySlider.setBounds (380, 100, 100, 100);
+    filterResonanceSlider.setBounds (380, 220, 100, 100);
 
     masterGainSlider.setBounds (500, 120, 60, 200);
 }
